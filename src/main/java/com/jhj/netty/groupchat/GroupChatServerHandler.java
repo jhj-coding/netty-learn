@@ -48,7 +48,7 @@ public class GroupChatServerHandler extends SimpleChannelInboundHandler<String> 
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        channelGroup.writeAndFlush("[客户端]"+channel.remoteAddress()+"加入聊天"+sdf.format(new Date())+"\n");
+        channelGroup.writeAndFlush("[客户端]"+channel.remoteAddress()+"离开聊天"+sdf.format(new Date())+"\n");
     }
 
     //异常 关闭通道
