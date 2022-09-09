@@ -1,12 +1,9 @@
-package com.jhj.netty.protobuf;
+package com.jhj.netty.protobuf2;
 
-import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * 说明
@@ -29,9 +26,16 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 
         //读取从客户端发送的StudentPojo.student
-        StudentPOJO.Student student = (StudentPOJO.Student) msg;
+        MyDataInfo.MyMessage myMessage = (MyDataInfo.MyMessage) msg;
+        MyDataInfo.MyMessage.DataType dataType = myMessage.getDataType();
+        if (dataType== MyDataInfo.MyMessage.DataType.StudentType){
+            System.out.println("客户端发送消息是：" + myMessage.getStudent().getId()+myMessage.getStudent().getName());
 
-        System.out.println("客户端发送消息是：" + student.getId()+student.getName());
+        }else if (dataType== MyDataInfo.MyMessage.DataType.WorkerType) {
+            System.out.println("客户端发送消息是：" + myMessage.getWorker().getAge()+myMessage.getWorker().getName());
+        }else {
+            System.out.println("参数不对");
+        }
 
     }
 

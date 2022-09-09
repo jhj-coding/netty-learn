@@ -12,9 +12,8 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <!--protobuf 版本号-->
-        <protobuf.version>3.6.0</protobuf.version>
+        <protobuf.version>3.6.1</protobuf.version>
         <!--grpc版本号-->
-        <grpc.version>1.7.0</grpc.version>
     </properties>
 
 
@@ -24,45 +23,47 @@
             <artifactId>protobuf-java-util</artifactId>
             <version>${protobuf.version}</version>
         </dependency>
-        <dependency>
-            <groupId>io.grpc</groupId>
-            <artifactId>grpc-all</artifactId>
-            <version>${grpc.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
+        <defaultGoal>package</defaultGoal>
         <extensions>
             <extension>
                 <groupId>kr.motd.maven</groupId>
                 <artifactId>os-maven-plugin</artifactId>
-                <version>1.6.2</version>
+                <version>1.5.0.Final</version>
             </extension>
         </extensions>
+
         <plugins>
+            <!-- protobuf 编译组件 -->
             <plugin>
                 <groupId>org.xolstice.maven.plugins</groupId>
                 <artifactId>protobuf-maven-plugin</artifactId>
-                <version>0.6.1</version>
+                <version>0.5.1</version>
+                <extensions>true</extensions>
                 <configuration>
-                    <!--     指定代码生成到 src 下-->
-                    <outputDirectory>${basedir}/src/main/java/com/jhj/netty/protobuf</outputDirectory>
-                    <protoSourceRoot>${basedir}/src/main/java/com/jhj/netty/protobuf/proto</protoSourceRoot><!--默认的proto文件路径-->
-                    <!--Protobuf compiler artifact specification, in groupId:artifactId:version[:type[:classifier]] format. When this parameter is set, the plugin attempts to resolve the specified artifact as protoc executable.-->
-                    <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
-                    </protocArtifact>
-                    <pluginId>grpc-java</pluginId>
-                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
-                    </pluginArtifact>
+                    <protoSourceRoot>${project.basedir}/src/main/java/com/jhj/netty/proto</protoSourceRoot>
+                    <protocArtifact>com.google.protobuf:protoc:3.2.0:exe:${os.detected.classifier}</protocArtifact>
                 </configuration>
                 <executions>
                     <execution>
                         <goals>
                             <goal>compile</goal>
-                            <goal>compile-custom</goal> <!--按照指定的插件进行编译，即按照GRPC协议编译protob文件-->
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- 编译jar包的jdk版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

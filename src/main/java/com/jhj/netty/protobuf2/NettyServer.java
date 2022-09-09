@@ -1,4 +1,4 @@
-package com.jhj.netty.protobuf;
+package com.jhj.netty.protobuf2;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
@@ -37,7 +37,7 @@ public class NettyServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
 
-                            ch.pipeline().addLast("decoder",new ProtobufDecoder(StudentPOJO.Student.getDefaultInstance()));//加入ProtoBufDecoder
+                            ch.pipeline().addLast("decoder",new ProtobufDecoder(MyDataInfo.MyMessage.getDefaultInstance()));//加入ProtoBufDecoder
                             ch.pipeline().addLast(new NettyServerHandler());
                         }
                     }); //给我们的wokerGroup的EventGroup对应的通道设置处理器
